@@ -129,6 +129,30 @@ eaprog/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/build
 .PHONY : eaprog/fast
 
+src/Segment.o: src/Segment.cpp.o
+.PHONY : src/Segment.o
+
+# target to build an object file
+src/Segment.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Segment.cpp.o
+.PHONY : src/Segment.cpp.o
+
+src/Segment.i: src/Segment.cpp.i
+.PHONY : src/Segment.i
+
+# target to preprocess a source file
+src/Segment.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Segment.cpp.i
+.PHONY : src/Segment.cpp.i
+
+src/Segment.s: src/Segment.cpp.s
+.PHONY : src/Segment.s
+
+# target to generate assembly for a file
+src/Segment.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Segment.cpp.s
+.PHONY : src/Segment.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -162,6 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... eaprog"
+	@echo "... src/Segment.o"
+	@echo "... src/Segment.i"
+	@echo "... src/Segment.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
