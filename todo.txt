@@ -1,0 +1,4 @@
+* implement fitness function
+* implement selection
+* implement mutation
+* implement bottom population culling
