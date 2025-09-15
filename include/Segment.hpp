@@ -4,15 +4,19 @@
 #include <iostream>
 #include <vector>
 
+#include <opencv2/core.hpp>
+
 
 struct Segment {
     Segment();
 
+    Segment(cv::Point tl, cv::Point tr, cv::Point bl, cv::Point br);
+
     ~Segment();
 
     const int m_numvertices;
-    std::vector<std::pair<int,int>> m_vertices; // The 10 points that belong to this segment.
-    float m_fitnessScore;
+    std::vector<cv::Point> m_vertices; // The 10 points that belong to this segment.
+    double m_fitnessScore;
     const cv::Scalar m_segcolour; // Colour of segment's vertices. Helps differentiate it from other segments.
 };
 

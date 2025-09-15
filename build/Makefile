@@ -129,6 +129,30 @@ eaprog/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/build
 .PHONY : eaprog/fast
 
+src/Fitness.o: src/Fitness.cpp.o
+.PHONY : src/Fitness.o
+
+# target to build an object file
+src/Fitness.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Fitness.cpp.o
+.PHONY : src/Fitness.cpp.o
+
+src/Fitness.i: src/Fitness.cpp.i
+.PHONY : src/Fitness.i
+
+# target to preprocess a source file
+src/Fitness.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Fitness.cpp.i
+.PHONY : src/Fitness.cpp.i
+
+src/Fitness.s: src/Fitness.cpp.s
+.PHONY : src/Fitness.s
+
+# target to generate assembly for a file
+src/Fitness.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Fitness.cpp.s
+.PHONY : src/Fitness.cpp.s
+
 src/Segment.o: src/Segment.cpp.o
 .PHONY : src/Segment.o
 
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... eaprog"
+	@echo "... src/Fitness.o"
+	@echo "... src/Fitness.i"
+	@echo "... src/Fitness.s"
 	@echo "... src/Segment.o"
 	@echo "... src/Segment.i"
 	@echo "... src/Segment.s"

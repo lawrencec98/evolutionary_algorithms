@@ -12,7 +12,14 @@
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
 
-void CalculateFitnessScore(Segment* segment, Segment* idealroi);
+typedef boost::geometry::model::d2::point_xy<int> BoostPoint;
+typedef boost::geometry::model::polygon<BoostPoint> BoostPolygon;
+
+
+BoostPolygon MakePolygon(const std::vector<cv::Point>& quad);
+
+
+double CalculateFitnessScore(Segment* segment, Segment* idealroi);
 
 
 #endif // _FITNESS_HPP_
