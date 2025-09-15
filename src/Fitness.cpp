@@ -33,6 +33,7 @@ double CalculateFitnessScore(Segment* segment, Segment* idealsegment)
     }
 
     double unionArea = area1 + area2 - interArea;
+    std::cout << "area1=" << area1 << " area2=" << area2 << " interArea=" << interArea << " union=" << unionArea << "\n";
     if (unionArea <= 0.0) return 0.0;
 
     return interArea / unionArea;

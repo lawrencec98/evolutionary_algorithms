@@ -14,10 +14,10 @@ struct Segment {
 
     ~Segment();
 
-    const int m_numvertices;
+    int m_numvertices;
     std::vector<cv::Point> m_vertices; // The 10 points that belong to this segment.
     double m_fitnessScore;
-    const cv::Scalar m_segcolour; // Colour of segment's vertices. Helps differentiate it from other segments.
+    cv::Scalar m_segcolour; // Colour of segment's vertices. Helps differentiate it from other segments.
 };
 
 
