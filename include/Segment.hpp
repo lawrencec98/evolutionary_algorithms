@@ -8,7 +8,13 @@
 struct Segment {
     Segment();
 
-    std::vector<std::pair<int,int>> m_vertices;
+    ~Segment();
+
+    float area();
+    int m_numvertices;
+    std::vector<std::pair<int,int>> m_vertices; // The 10 points that belong to this segment.
+    float m_fitnessScore;
+    cv::Scalar m_segcolour; // Colour of segment's vertices. Helps differentiate it from other segments.
 };
 
 
