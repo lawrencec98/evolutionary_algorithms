@@ -10,7 +10,7 @@
 struct Segment {
     Segment();
 
-    Segment(cv::Point tl, cv::Point tr, cv::Point bl, cv::Point br);
+    Segment(cv::Point tl, cv::Point tr, cv::Point br, cv::Point bl); // order matters
 
     ~Segment();
 

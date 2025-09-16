@@ -22,42 +22,41 @@ int main() {
     cv::Point idealseg_bl(300,400); // bottomleft
     cv::Point idealseg_br(600,400); // bottomright
 
-    Segment idealseg(idealseg_tl, idealseg_tr, idealseg_bl, idealseg_br);
+    Segment idealseg(idealseg_tl, idealseg_tr, idealseg_br, idealseg_bl);
+    cv::Rect ideal(idealseg_tl, idealseg_br);
 
 
     /* Start the program with a random population of 20 segments. */
     std::vector<Segment> population(POPULATION_SIZE);
-
-    /* Draw the environment and population */
-    cv::Rect ideal(idealseg_tl, idealseg_br);
     
-    /* Do the simulation */
+    /* Main simulation loop */
     int iteration = 0;
     while (iteration < NUM_GENERATIONS_TO_SIMULATE)
     {
+        /****************************************************************************************************************************/
+        /* Display current state of population */
         cv::Mat window(IMAGE_HEIGHT,IMAGE_WIDTH, CV_8UC3);
         cv::rectangle(window, ideal, cv::Scalar(255,255,255), IDEAL_SEGMENT_THICKNESS);
 
-        /* Display current state of population */
         for (int i = 0; i < population.size(); ++i)
         {
             for (int j = 0; j < population[i].m_numvertices; ++j)
             {
-                cv::circle(window, population[i].m_vertices[j], 1, population[i].m_segcolour, SEG_VERTEX_THICKNESS);
+                cv::polylines(window, population[i].m_vertices, 1, population[i].m_segcolour, 1);
             }
         }
 
         cv::imshow("Window with population", window);
         cv::waitKey(0);
 
+        /****************************************************************************************************************************/
         /* Determine fitness scores */
         for (int i = 0; i < POPULATION_SIZE; ++i)
         {
-            std::vector<cv::Point> ordered;
-            cv::convexHull(population[i].m_vertices, ordered);
             population[i].m_fitnessScore = CalculateFitnessScore(&population[i], &idealseg);
         }
 
+        /****************************************************************************************************************************/
         /* Cull Stage */
         std::sort(population.begin(), population.end(), [](Segment a, Segment b){return a.m_fitnessScore > b.m_fitnessScore;});
         for (auto i : population)
@@ -67,9 +66,13 @@ int main() {
 
         population.pop_back();
 
+        /****************************************************************************************************************************/
         /* Reproduction Stage */
 
+        /****************************************************************************************************************************/
         /* Mutation Stage */
+
+        cv::destroyAllWindows();
     }
     
 
