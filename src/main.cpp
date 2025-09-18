@@ -28,6 +28,8 @@ int main() {
 
     /* Start the program with a random population of 20 segments. */
     std::vector<Segment> population(POPULATION_SIZE);
+
+    cv::Mat window(IMAGE_HEIGHT,IMAGE_WIDTH, CV_8UC3);
     
     /* Main simulation loop */
     int iteration = 0;
@@ -35,7 +37,7 @@ int main() {
     {
         /****************************************************************************************************************************/
         /* Display current state of population */
-        cv::Mat window(IMAGE_HEIGHT,IMAGE_WIDTH, CV_8UC3);
+        window.setTo(cv::Scalar(0,0,0));
         cv::rectangle(window, ideal, cv::Scalar(255,255,255), IDEAL_SEGMENT_THICKNESS);
 
         for (int i = 0; i < population.size(); ++i)
@@ -59,12 +61,13 @@ int main() {
         /****************************************************************************************************************************/
         /* Cull Stage */
         std::sort(population.begin(), population.end(), [](Segment a, Segment b){return a.m_fitnessScore > b.m_fitnessScore;});
+
+        population.pop_back();
+
         for (auto i : population)
         {
             std::cout << i.m_fitnessScore << std::endl;
         }
-
-        population.pop_back();
 
         /****************************************************************************************************************************/
         /* Reproduction Stage */
