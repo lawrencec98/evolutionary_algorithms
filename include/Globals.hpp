@@ -7,10 +7,12 @@
 #define POPULATION_SIZE 20
 #define NUM_GENERATIONS_TO_SIMULATE 1000
 #define IDEAL_SEGMENT_THICKNESS 0.1
+#define MUTATION_CHANCE 0.05
 
 // Specific to Segments
 #define SEG_NUM_VERTICES 4
 #define SEG_VERTEX_THICKNESS 3
+#define MAX_MUTATION_VARIATION 30 //in pixels
 
 
 #include <opencv2/highgui.hpp>

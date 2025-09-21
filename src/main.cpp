@@ -62,7 +62,12 @@ int main() {
         /* Cull Stage */
         std::sort(population.begin(), population.end(), [](Segment a, Segment b){return a.m_fitnessScore > b.m_fitnessScore;});
 
-        population.pop_back();
+        int numToCull = population.size() * 0.1;
+
+        for (int i = 0; i < numToCull; ++i)
+        {
+            population.pop_back();
+        }
 
         for (auto i : population)
         {
@@ -71,9 +76,36 @@ int main() {
 
         /****************************************************************************************************************************/
         /* Reproduction Stage */
+        // Top 20% of population is allowed to reproduce.
+        int numAllowedToReproduce = POPULATION_SIZE * 0.2;
+        std::cout << "numalllowedtoreproduce = " << numAllowedToReproduce << std::endl;
 
-        /****************************************************************************************************************************/
-        /* Mutation Stage */
+        // Reproducing means passing down 50% of genetics from each parent.
+        std::sort(population.begin(), population.end(), [](Segment a, Segment b){return a.m_fitnessScore > b.m_fitnessScore;});
+
+        for (int i = 0; i < numAllowedToReproduce / 2; i += 2)
+        {
+            cv::Point vertex1 = population[i].m_vertices[rand() % 4];
+            cv::Point vertex2 = population[i].m_vertices[rand() % 4];
+            cv::Point vertex3 = population[i + 1].m_vertices[rand() % 4];
+            cv::Point vertex4 = population[i + 1].m_vertices[rand() % 4];
+
+            /****************************************************************************************************************************/
+            /* Mutation Stage */
+            int mutate = false;
+            float lottery = static_cast<float>(rand()) / RAND_MAX;
+            lottery > MUTATION_CHANCE ? mutate=true:mutate=false;
+
+            Segment newSegment(vertex1, vertex2, vertex3, vertex4);
+
+            if (mutate)
+            {
+                newSegment.MutateSegmentVertices();
+            }
+
+            population.push_back(newSegment);
+        }
+        
 
         cv::destroyAllWindows();
     }

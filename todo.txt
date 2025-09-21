@@ -1,7 +1,0 @@
-* implement fitness function
-* implement selection
-* implement mutation
-* implement bottom population culling
-
-
-** BUG: seems like area of my idealseg is always zero inside calculatefitnesscore()

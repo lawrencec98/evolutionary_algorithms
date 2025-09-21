@@ -14,6 +14,8 @@ struct Segment {
 
     ~Segment();
 
+    int MutateSegmentVertices();
+
     int m_numvertices;
     std::vector<cv::Point> m_vertices; // The 10 points that belong to this segment.
     double m_fitnessScore;
