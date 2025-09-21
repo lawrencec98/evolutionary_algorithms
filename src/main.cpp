@@ -29,7 +29,8 @@ int main() {
     /* Start the program with a random population of 20 segments. */
     std::vector<Segment> population(POPULATION_SIZE);
 
-    cv::Mat window(IMAGE_HEIGHT,IMAGE_WIDTH, CV_8UC3);
+    cv::Mat background(IMAGE_HEIGHT,IMAGE_WIDTH, CV_8UC3, cv::Scalar(0,0,0));
+    cv::rectangle(background, ideal, cv::Scalar(255,255,255), IDEAL_SEGMENT_THICKNESS);
     
     /* Main simulation loop */
     int iteration = 0;
@@ -37,19 +38,19 @@ int main() {
     {
         /****************************************************************************************************************************/
         /* Display current state of population */
-        window.setTo(cv::Scalar(0,0,0));
-        cv::rectangle(window, ideal, cv::Scalar(255,255,255), IDEAL_SEGMENT_THICKNESS);
+        cv::Mat frame = background.clone();
 
         for (int i = 0; i < population.size(); ++i)
         {
             for (int j = 0; j < population[i].m_numvertices; ++j)
             {
-                cv::polylines(window, population[i].m_vertices, 1, population[i].m_segcolour, 1);
+                cv::polylines(frame, population[i].m_vertices, 1, population[i].m_segcolour, 1);
             }
         }
 
-        cv::imshow("Window with population", window);
-        cv::waitKey(0);
+        cv::imshow("Window with population", frame);
+        char c = (char)cv::waitKey(50); // ~20 fps smooth
+        if (c == 27) break;
 
         /****************************************************************************************************************************/
         /* Determine fitness scores */
@@ -62,7 +63,7 @@ int main() {
         /* Cull Stage */
         std::sort(population.begin(), population.end(), [](Segment a, Segment b){return a.m_fitnessScore > b.m_fitnessScore;});
 
-        int numToCull = population.size() * 0.1;
+        int numToCull = population.size() * BOTTOM_CULL_PERCENTAGE;
 
         for (int i = 0; i < numToCull; ++i)
         {
@@ -77,7 +78,7 @@ int main() {
         /****************************************************************************************************************************/
         /* Reproduction Stage */
         // Top 20% of population is allowed to reproduce.
-        int numAllowedToReproduce = POPULATION_SIZE * 0.2;
+        int numAllowedToReproduce = POPULATION_SIZE * TOP_REPRODUCE_PERCENTAGE;
         std::cout << "numalllowedtoreproduce = " << numAllowedToReproduce << std::endl;
 
         // Reproducing means passing down 50% of genetics from each parent.
@@ -85,10 +86,14 @@ int main() {
 
         for (int i = 0; i < numAllowedToReproduce / 2; i += 2)
         {
-            cv::Point vertex1 = population[i].m_vertices[rand() % 4];
-            cv::Point vertex2 = population[i].m_vertices[rand() % 4];
-            cv::Point vertex3 = population[i + 1].m_vertices[rand() % 4];
-            cv::Point vertex4 = population[i + 1].m_vertices[rand() % 4];
+            // Choose two parents at random
+            Segment parent1 = population[rand() % numAllowedToReproduce];
+            Segment parent2 = population[rand() % numAllowedToReproduce]; // Yes parent can reproduce with itself for now. Will fix.
+
+            cv::Point vertex1 = parent1.m_vertices[rand() % 4];
+            cv::Point vertex2 = parent2.m_vertices[rand() % 4];
+            cv::Point vertex3 = parent1.m_vertices[rand() % 4];
+            cv::Point vertex4 = parent2.m_vertices[rand() % 4];
 
             /****************************************************************************************************************************/
             /* Mutation Stage */
@@ -105,16 +110,9 @@ int main() {
 
             population.push_back(newSegment);
         }
-        
 
-        cv::destroyAllWindows();
+        iteration++;
+
     }
-    
-
-    // for each segment in population:
-        // CalculateFitnessScore();
-    // Kill the bottom 50 Segments.
-    // Reproduce + Mutations.
-    // Higher fitness population has higher chance to reproduce.
 
 }
