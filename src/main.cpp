@@ -31,6 +31,9 @@ int main() {
 
     cv::Mat background(IMAGE_HEIGHT,IMAGE_WIDTH, CV_8UC3, cv::Scalar(0,0,0));
     cv::rectangle(background, ideal, cv::Scalar(255,255,255), IDEAL_SEGMENT_THICKNESS);
+
+    cv::namedWindow("MyWindow", cv::WINDOW_AUTOSIZE);
+    cv::Mat frame;
     
     /* Main simulation loop */
     int iteration = 0;
@@ -38,18 +41,18 @@ int main() {
     {
         /****************************************************************************************************************************/
         /* Display current state of population */
-        cv::Mat frame = background.clone();
+        frame = background.clone();
 
         for (int i = 0; i < population.size(); ++i)
         {
             for (int j = 0; j < population[i].m_numvertices; ++j)
             {
-                cv::polylines(frame, population[i].m_vertices, 1, population[i].m_segcolour, 1);
+                cv::polylines(frame, population[i].m_vertices, true, population[i].m_segcolour, 1);
             }
         }
 
-        cv::imshow("Window with population", frame);
-        char c = (char)cv::waitKey(50); // ~20 fps smooth
+        cv::imshow("MyWindow", frame);
+        char c = (char)cv::waitKey(20); // ~20 fps smooth
         if (c == 27) break;
 
         /****************************************************************************************************************************/
