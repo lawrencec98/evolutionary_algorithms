@@ -20,7 +20,7 @@ int queue_size(queue_t* queue)
 
 int queue_enqueue(queue_t* queue, queue_item item)
 {
-    queue_node* newnode = (queue_node*)malloc(sizeof(queue_node));
+    std::shared_ptr<queue_node> newnode = std::make_shared<queue_node>(sizeof(queue_node));
 
     newnode->data = item;
     newnode->next = nullptr;
@@ -37,7 +37,7 @@ int queue_enqueue(queue_t* queue, queue_item item)
 queue_item queue_pop(queue_t* queue)
 {
     queue_item res;
-    queue_node* node;
+    std::shared_ptr<queue_node> node;
 
     if (queue->head == nullptr)
     {
@@ -51,7 +51,5 @@ queue_item queue_pop(queue_t* queue)
     if (queue->head == nullptr)
         queue->tail == nullptr;
     
-    free(node);
     return res;
 }
-
