@@ -12,6 +12,7 @@
 #include <vector>
 #include <algorithm>
 #include <thread>
+#include <semaphore>
 
 
 cv::Point idealseg_tl(300,200); // topleft
@@ -25,7 +26,9 @@ cv::Rect ideal(idealseg_tl, idealseg_br);
 
 void PerformEvolution(std::shared_ptr<std::vector<Segment>> population, std::shared_ptr<queue_t> framebuffer)
 {
-    /****************************************************************************************************************************/
+    while(1)
+    {
+        /****************************************************************************************************************************/
         /* Determine fitness scores */
         for (int i = 0; i < POPULATION_SIZE; ++i)
         {
@@ -83,6 +86,7 @@ void PerformEvolution(std::shared_ptr<std::vector<Segment>> population, std::sha
 
             population->push_back(newSegment);
         }
+    }
 }
 
 
@@ -136,8 +140,12 @@ int main() {
 
     while (1)
     {
-        frame = (cv::Mat*) queue_pop(framebuffer);
-        cv::imshow("MyWindow", *frame);
+        if (!queue_isempty(framebuffer))
+        {
+            frame = (cv::Mat*) queue_pop(framebuffer);   
+        }
+
+        cv::imshow("MyWindow", *frame); 
         char c = (char)cv::waitKey(20); // ~20 fps smooth
         if (c == 27) break;
     }
