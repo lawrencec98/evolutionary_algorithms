@@ -1,26 +1,26 @@
 #include "Queue.hpp"
 
 
-void queue_init(queue_t* queue)
+void queue_init(std::shared_ptr<queue_t> queue)
 {
     queue->head = nullptr;
     queue->tail = nullptr;
     queue->numnodes = 0;
 }
 
-int queue_isempty(queue_t* queue)
+int queue_isempty(std::shared_ptr<queue_t> queue)
 {
     return queue->numnodes == 0;
 }
 
-int queue_size(queue_t* queue)
+int queue_size(std::shared_ptr<queue_t> queue)
 {
     return queue->numnodes;
 }
 
-int queue_enqueue(queue_t* queue, queue_item item)
+void queue_enqueue(std::shared_ptr<queue_t> queue, queue_item item)
 {
-    std::shared_ptr<queue_node> newnode = std::make_shared<queue_node>(sizeof(queue_node));
+    std::shared_ptr<queue_node> newnode = std::make_shared<queue_node>();
 
     newnode->data = item;
     newnode->next = nullptr;
@@ -34,7 +34,7 @@ int queue_enqueue(queue_t* queue, queue_item item)
     queue->numnodes += 1;
 }
 
-queue_item queue_pop(queue_t* queue)
+queue_item queue_pop(std::shared_ptr<queue_t> queue)
 {
     queue_item res;
     std::shared_ptr<queue_node> node;
@@ -49,7 +49,7 @@ queue_item queue_pop(queue_t* queue)
 
     queue->head = queue->head->next;
     if (queue->head == nullptr)
-        queue->tail == nullptr;
+        queue->tail = nullptr;
     
     return res;
 }

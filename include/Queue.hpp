@@ -34,7 +34,7 @@ int queue_isempty(std::shared_ptr<queue_t> queue);
 int queue_size(std::shared_ptr<queue_t> queue);
 
 /* Add an item to the back of queue */
-int queue_enqueue(std::shared_ptr<queue_t> queue, queue_item item);
+void queue_enqueue(std::shared_ptr<queue_t> queue, queue_item item);
 
 /* Removes an element from front of queue */
 queue_item queue_pop(std::shared_ptr<queue_t> queue);

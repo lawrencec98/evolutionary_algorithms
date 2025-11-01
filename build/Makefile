@@ -153,6 +153,30 @@ src/Fitness.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Fitness.cpp.s
 .PHONY : src/Fitness.cpp.s
 
+src/Queue.o: src/Queue.cpp.o
+.PHONY : src/Queue.o
+
+# target to build an object file
+src/Queue.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Queue.cpp.o
+.PHONY : src/Queue.cpp.o
+
+src/Queue.i: src/Queue.cpp.i
+.PHONY : src/Queue.i
+
+# target to preprocess a source file
+src/Queue.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Queue.cpp.i
+.PHONY : src/Queue.cpp.i
+
+src/Queue.s: src/Queue.cpp.s
+.PHONY : src/Queue.s
+
+# target to generate assembly for a file
+src/Queue.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Queue.cpp.s
+.PHONY : src/Queue.cpp.s
+
 src/Segment.o: src/Segment.cpp.o
 .PHONY : src/Segment.o
 
@@ -213,6 +237,9 @@ help:
 	@echo "... src/Fitness.o"
 	@echo "... src/Fitness.i"
 	@echo "... src/Fitness.s"
+	@echo "... src/Queue.o"
+	@echo "... src/Queue.i"
+	@echo "... src/Queue.s"
 	@echo "... src/Segment.o"
 	@echo "... src/Segment.i"
 	@echo "... src/Segment.s"
