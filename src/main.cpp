@@ -68,16 +68,16 @@ void PerformEvolution(std::shared_ptr<std::vector<RectSegment>> population, std:
 
             /****************************************************************************************************************************/
             /* Mutation Stage */
-            // int mutate = false;
-            // float lottery = static_cast<float>(rand()) / RAND_MAX;
-            // lottery > MUTATION_CHANCE ? mutate=true:mutate=false;
+            int mutate = false;
+            float lottery = static_cast<float>(rand()) / RAND_MAX;
+            lottery > MUTATION_CHANCE ? mutate=true:mutate=false;
 
             RectSegment newSegment(x,y,width,height);
 
-            // if (mutate)
-            // {
-            //     newSegment.MutateSegmentVertices();
-            // }
+            if (mutate)
+            {
+                newSegment.MutateSegmentVertices();
+            }
 
             population->push_back(newSegment);
         }
@@ -138,7 +138,7 @@ int main() {
         }
 
         cv::imshow("MyWindow", *frame); 
-        char c = (char)cv::waitKey(20); // ~20 fps smooth
+        char c = (char)cv::waitKey(50); // ~20 fps smooth
         if (c == 27) break;
     }
 

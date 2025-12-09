@@ -14,7 +14,7 @@ struct RectSegment {
 
     ~RectSegment();
 
-    // int MutateSegmentVertices();
+    void MutateSegmentVertices();
 
     int m_tl_x;
     int m_tl_y;

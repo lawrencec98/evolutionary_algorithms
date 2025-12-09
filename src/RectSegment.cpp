@@ -8,11 +8,21 @@ RectSegment::RectSegment()
     : m_fitnessScore(-1),
       m_segcolour(cv::Scalar(rand() % 255, rand() % 255, rand() % 255))
 {
-    m_tl_x = rand() % IMAGE_WIDTH - 50;
-    m_tl_y = rand() % IMAGE_HEIGHT - 30;
+    m_tl_x = rand() % IMAGE_WIDTH - 51;
+    m_tl_y = rand() % IMAGE_HEIGHT - 31;
 
     m_width = 50;
     m_height = 30;
+
+    if (m_width > IMAGE_WIDTH)
+    {
+        m_width = IMAGE_WIDTH - m_tl_x;
+    }
+
+    if (m_height > IMAGE_HEIGHT)
+    {
+        m_height = IMAGE_HEIGHT - m_tl_y;
+    }
 }
 
 
@@ -94,3 +104,35 @@ RectSegment::~RectSegment()
 
 //     return 0;
 // }
+
+
+void RectSegment::MutateSegmentVertices()
+{
+    int amountToMutateX = rand() % 10;
+
+    int amountToMutateY = rand() % 10;
+
+    int toAddX = 0; // determines whether we add or subtract from X-coordinate
+    int toAddY = 0; // determines whether we add or subtract from Y-coordinate
+
+    float lottery = static_cast<float>(rand()) / RAND_MAX;
+    lottery > 0.5 ? toAddX=1 : toAddX=0;
+    lottery = static_cast<float>(rand()) / RAND_MAX;
+    lottery > 0.5 ? toAddY=1 : toAddY=0;
+
+    if (toAddX)
+    {
+        m_tl_x += amountToMutateX;
+    }
+    else {
+        m_tl_x -= amountToMutateX;
+    }
+
+    if (toAddY)
+    {
+        m_tl_y += amountToMutateY;
+    }
+    else {
+        m_tl_y -= amountToMutateY;
+    }
+}
