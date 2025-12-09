@@ -16,15 +16,15 @@
 
 
 cv::Point idealseg_tl(300,200); // topleft
-cv::Point idealseg_tr(600,200); // topright
+cv::Point idealseg_tr(700,200); // topright
 cv::Point idealseg_bl(300,400); // bottomleft
-cv::Point idealseg_br(600,400); // bottomright
+cv::Point idealseg_br(700,400); // bottomright
 
-Segment idealseg(idealseg_tl, idealseg_tr, idealseg_br, idealseg_bl);
+RectSegment idealseg(300, 200, 400, 200);
 cv::Rect ideal(idealseg_tl, idealseg_br);
 
 
-void PerformEvolution(std::shared_ptr<std::vector<Segment>> population, std::shared_ptr<queue_t> framebuffer)
+void PerformEvolution(std::shared_ptr<std::vector<RectSegment>> population, std::shared_ptr<queue_t> framebuffer)
 {
     while(1)
     {
@@ -32,57 +32,52 @@ void PerformEvolution(std::shared_ptr<std::vector<Segment>> population, std::sha
         /* Determine fitness scores */
         for (int i = 0; i < POPULATION_SIZE; ++i)
         {
-            population->at(i).m_fitnessScore = CalculateFitnessScore(&population->at(i), &idealseg);
+            population->at(i).m_fitnessScore = CalculateFitnessScore(population->at(i), idealseg);
         }
 
         /****************************************************************************************************************************/
         /* Cull Stage */
-        std::sort(population->begin(), population->end(), [](Segment a, Segment b){return a.m_fitnessScore > b.m_fitnessScore;});
+        std::sort(population->begin(), population->end(), [](RectSegment a, RectSegment b){return a.m_fitnessScore > b.m_fitnessScore;});
 
-        int numToCull = population->size() * BOTTOM_CULL_PERCENTAGE;
+        int numToCull = 5;
 
         for (int i = 0; i < numToCull; ++i)
         {
             population->pop_back();
         }
 
-        // for (auto i : population)
-        // {
-        //     std::cout << i.m_fitnessScore << std::endl;
-        // }
-
         /****************************************************************************************************************************/
         /* Reproduction Stage */
         // Top 20% of population is allowed to reproduce.
-        int numAllowedToReproduce = POPULATION_SIZE * TOP_REPRODUCE_PERCENTAGE;
+        int numAllowedToReproduce = 10;
         std::cout << "numalllowedtoreproduce = " << numAllowedToReproduce << std::endl;
 
         // Reproducing means passing down 50% of genetics from each parent.
-        std::sort(population->begin(), population->end(), [](Segment a, Segment b){return a.m_fitnessScore > b.m_fitnessScore;});
+        std::sort(population->begin(), population->end(), [](RectSegment a, RectSegment b){return a.m_fitnessScore > b.m_fitnessScore;});
 
         for (int i = 0; i < numAllowedToReproduce / 2; i += 2)
         {
             // Choose two parents at random
-            Segment parent1 = population->at(rand() % numAllowedToReproduce);
-            Segment parent2 = population->at(rand() % numAllowedToReproduce); // Yes parent can reproduce with itself for now. Will fix.
+            RectSegment parent1 = population->at(rand() % numAllowedToReproduce);
+            RectSegment parent2 = population->at(rand() % numAllowedToReproduce); // Yes parent can reproduce with itself for now. Will fix.
 
-            cv::Point vertex1 = parent1.m_vertices[rand() % 4];
-            cv::Point vertex2 = parent2.m_vertices[rand() % 4];
-            cv::Point vertex3 = parent1.m_vertices[rand() % 4];
-            cv::Point vertex4 = parent2.m_vertices[rand() % 4];
+            int x = parent1.m_tl_x;
+            int y = parent2.m_tl_y;
+            int width = parent1.m_width;
+            int height = parent2.m_height;
 
             /****************************************************************************************************************************/
             /* Mutation Stage */
-            int mutate = false;
-            float lottery = static_cast<float>(rand()) / RAND_MAX;
-            lottery > MUTATION_CHANCE ? mutate=true:mutate=false;
+            // int mutate = false;
+            // float lottery = static_cast<float>(rand()) / RAND_MAX;
+            // lottery > MUTATION_CHANCE ? mutate=true:mutate=false;
 
-            Segment newSegment(vertex1, vertex2, vertex3, vertex4);
+            RectSegment newSegment(x,y,width,height);
 
-            if (mutate)
-            {
-                newSegment.MutateSegmentVertices();
-            }
+            // if (mutate)
+            // {
+            //     newSegment.MutateSegmentVertices();
+            // }
 
             population->push_back(newSegment);
         }
@@ -90,7 +85,7 @@ void PerformEvolution(std::shared_ptr<std::vector<Segment>> population, std::sha
 }
 
 
-void DrawPopulation(std::shared_ptr<std::vector<Segment>> population, std::shared_ptr<queue_t> framebuffer)
+void DrawPopulation(std::shared_ptr<std::vector<RectSegment>> population, std::shared_ptr<queue_t> framebuffer)
 {
 
     while (1)
@@ -109,10 +104,7 @@ void DrawPopulation(std::shared_ptr<std::vector<Segment>> population, std::share
 
             for (int i = 0; i < population->size(); ++i)
             {
-                for (int j = 0; j < population->at(i).m_numvertices; ++j)
-                {
-                    cv::polylines(frame, population->at(i).m_vertices, true, population->at(i).m_segcolour, 1);
-                }
+                cv::rectangle(frame, cv::Point(population->at(i).m_tl_x, population->at(i).m_tl_y), cv::Point(population->at(i).m_tl_x + population->at(i).m_width, population->at(i).m_tl_x + population->at(i).m_height), population->at(i).m_segcolour, 2);
             }
 
             queue_enqueue(framebuffer, &frame);
@@ -128,7 +120,7 @@ int main() {
 
     /* Start the program with a random population of 20 segments. */
     // std::vector<Segment> population(POPULATION_SIZE);
-    std::shared_ptr<std::vector<Segment>> population_sp = std::make_shared<std::vector<Segment>>(POPULATION_SIZE);
+    std::shared_ptr<std::vector<RectSegment>> population_sp = std::make_shared<std::vector<RectSegment>>(POPULATION_SIZE);
     std::shared_ptr<queue_t> framebuffer = std::make_shared<queue_t>();
     queue_init(framebuffer);
     

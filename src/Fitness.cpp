@@ -1,39 +1,39 @@
 #include "Fitness.hpp"
 
-BoostPolygon MakePolygon(const std::vector<cv::Point>& quad)
+namespace bg = boost::geometry;
+
+using point = bg::model::d2::point_xy<double>;
+using box   = bg::model::box<point>;
+
+
+
+box toBox(const RectSegment& r)
 {
-    BoostPolygon poly;
-    for (const auto& pt : quad)
-    {
-        boost::geometry::append(poly.outer(), BoostPoint(pt.x, pt.y));
-    }
+    double left   = r.m_tl_x;
+    double top    = r.m_tl_y;
+    double right  = r.m_tl_x + r.m_width;
+    double bottom = r.m_tl_y + r.m_height;
 
-    boost::geometry::append(poly.outer(), BoostPoint(quad[0].x, quad[0].y));
-
-    boost::geometry::correct(poly);
-    return poly;
+    return box(point(left, top), point(right, bottom));
 }
 
-
-double CalculateFitnessScore(Segment* segment, Segment* idealsegment)
+double IoU(const box& a, const box& b)
 {
-    BoostPolygon poly1 = MakePolygon(segment->m_vertices);
-    BoostPolygon poly2 = MakePolygon(idealsegment->m_vertices);
+    if (!bg::intersects(a, b))
+        return 0.0;
 
-    double area1 = boost::geometry::area(poly1);
-    double area2 = boost::geometry::area(poly2);
+    box inter;
+    bg::intersection(a, b, inter);
 
-    std::vector<BoostPolygon> output;
-    boost::geometry::intersection(poly1, poly2, output);
+    double interArea = bg::area(inter);
+    double unionArea = bg::area(a) + bg::area(b) - interArea;
 
-    double interArea = 0.0;
-    for (const auto& p : output)
-    {
-        interArea += boost::geometry::area(p);
-    }
+    return (unionArea > 0.0) ? interArea / unionArea : 0.0;
+}
 
-    double unionArea = area1 + area2 - interArea;
-    if (unionArea <= 0.0) return 0.0;
-
-    return interArea / unionArea;
+double CalculateFitnessScore(const RectSegment& r1, const RectSegment& r2)
+{
+    box b1 = toBox(r1);
+    box b2 = toBox(r2);
+    return IoU(b1, b2);
 }

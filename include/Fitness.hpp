@@ -4,6 +4,7 @@
 /*  Will use the Boost implementation of Weiler-Atherton clipping algorithm to calculate the
     intersection-over-union of two polygons.
 */
+#include "RectSegment.hpp"
 #include "Segment.hpp"
 
 #include <opencv2/imgproc.hpp>
@@ -18,8 +19,7 @@ typedef boost::geometry::model::polygon<BoostPoint> BoostPolygon;
 
 BoostPolygon MakePolygon(const std::vector<cv::Point>& quad);
 
-
-double CalculateFitnessScore(Segment* segment, Segment* idealroi);
+double CalculateFitnessScore(const RectSegment& r1, const RectSegment& r2);
 
 
 #endif // _FITNESS_HPP_

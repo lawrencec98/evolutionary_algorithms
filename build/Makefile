@@ -177,29 +177,29 @@ src/Queue.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Queue.cpp.s
 .PHONY : src/Queue.cpp.s
 
-src/Segment.o: src/Segment.cpp.o
-.PHONY : src/Segment.o
+src/RectSegment.o: src/RectSegment.cpp.o
+.PHONY : src/RectSegment.o
 
 # target to build an object file
-src/Segment.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Segment.cpp.o
-.PHONY : src/Segment.cpp.o
+src/RectSegment.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/RectSegment.cpp.o
+.PHONY : src/RectSegment.cpp.o
 
-src/Segment.i: src/Segment.cpp.i
-.PHONY : src/Segment.i
+src/RectSegment.i: src/RectSegment.cpp.i
+.PHONY : src/RectSegment.i
 
 # target to preprocess a source file
-src/Segment.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Segment.cpp.i
-.PHONY : src/Segment.cpp.i
+src/RectSegment.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/RectSegment.cpp.i
+.PHONY : src/RectSegment.cpp.i
 
-src/Segment.s: src/Segment.cpp.s
-.PHONY : src/Segment.s
+src/RectSegment.s: src/RectSegment.cpp.s
+.PHONY : src/RectSegment.s
 
 # target to generate assembly for a file
-src/Segment.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/Segment.cpp.s
-.PHONY : src/Segment.cpp.s
+src/RectSegment.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/eaprog.dir/build.make CMakeFiles/eaprog.dir/src/RectSegment.cpp.s
+.PHONY : src/RectSegment.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -240,9 +240,9 @@ help:
 	@echo "... src/Queue.o"
 	@echo "... src/Queue.i"
 	@echo "... src/Queue.s"
-	@echo "... src/Segment.o"
-	@echo "... src/Segment.i"
-	@echo "... src/Segment.s"
+	@echo "... src/RectSegment.o"
+	@echo "... src/RectSegment.i"
+	@echo "... src/RectSegment.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
